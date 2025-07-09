@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const socket = io('http://localhost:5000');
+const socket = io('https://bkpconnect.onrender.com');
 
 function getRoomId(user1, user2) {
   return [user1, user2].sort().join('_');
