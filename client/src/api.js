@@ -5,9 +5,10 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, 
 });
 
-// Add auth token to requests
+
 api.interceptors.request.use(
   (config) => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -21,7 +22,7 @@ api.interceptors.request.use(
   }
 );
 
-// Handle auth errors
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -33,4 +34,5 @@ api.interceptors.response.use(
   }
 );
 
-export default api; 
+export default api;
+
