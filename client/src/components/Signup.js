@@ -15,7 +15,7 @@ const Signup = ({ onSignup }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/auth/signup', { 
+      const response = await axios.post('https://bkpconnect.onrender.com/auth/signup', { 
         username, 
         password 
       });
