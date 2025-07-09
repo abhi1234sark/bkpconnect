@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "https://bkpconnect-7zz9o0cnq-abhi1234sarks-projects.vercel.app/",
+    origin: "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app/login",
     methods: ["GET", "POST"]
   }
 });
