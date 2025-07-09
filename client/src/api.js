@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://bkpconnect.onrender.com/',
+  baseURL: 'https://bkpconnect.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
