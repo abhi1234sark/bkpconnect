@@ -16,7 +16,7 @@ const Login = ({ onLogin }) => {
     }
 
     try {
-      const res = await axios.post('https://bkpconnect.onrender.com/auth/login/api', { 
+      const res = await axios.post('https://bkpconnect.onrender.com/auth/login/auth', { 
         username, 
         password 
       });
