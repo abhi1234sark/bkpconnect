@@ -25,7 +25,7 @@ const ChatRoom = () => {
     // Fetch target user info
     const fetchTargetUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/userprofile?userId=${userId}`, {
+        const response = await axios.get(`https://bkpconnect.onrender.com/userprofile?userId=${userId}`, {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,
           },
@@ -44,7 +44,7 @@ const ChatRoom = () => {
     // Fetch chat history
     const fetchChatHistory = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/chat/${roomId}`, {
+        const response = await axios.get(`https://bkpconnect.onrender.com/chat/${roomId}`, {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,
           },
