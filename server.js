@@ -12,43 +12,50 @@ const Chat = require('./models/Chat');
 
 const app = express();
 const server = http.createServer(app);
+
+// ✅ Set allowed origin for Vercel frontend
+const allowedOrigin = "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app";
+
+// ✅ Configure Socket.IO with CORS
 const io = socketIo(server, {
   cors: {
-    origin: "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app/login",
-    methods: ["GET", "POST"]
+    origin: allowedOrigin,
+    methods: ["GET", "POST"],
+    credentials: true,
   }
 });
 
-// Middleware
-app.use(cors());
+// ✅ Express Middleware
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connect to MongoDB
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   ssl: true,
-  sslValidate: false, // Bypass SSL validation for development
+  sslValidate: false,
 })
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Routes
+// ✅ Routes
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 
-// Socket.IO Chat functionality
+// ✅ Socket.IO Chat functionality
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
-  // Join chat room
   socket.on('joinRoom', (roomId) => {
     socket.join(roomId);
     console.log(`User joined room: ${roomId}`);
   });
 
-  // Send message
   socket.on('sendMessage', async ({ roomId, message }) => {
     try {
       let chat = await Chat.findOne({ roomId });
@@ -64,7 +71,6 @@ io.on('connection', (socket) => {
       chat.lastMessage = new Date();
       await chat.save();
 
-      // Populate user info for real-time emit
       const populatedMsg = await chat.populate('messages.admin', 'username profilePic');
       const lastMsg = populatedMsg.messages[populatedMsg.messages.length - 1];
 
@@ -74,13 +80,11 @@ io.on('connection', (socket) => {
     }
   });
 
-  // Join post room for comments
   socket.on('joinPostRoom', (postId) => {
     socket.join(postId);
     console.log(`User joined post room: ${postId}`);
   });
 
-  // New comment
   socket.on('newComment', async ({ postId, userId, text }) => {
     try {
       const comment = {
@@ -91,7 +95,6 @@ io.on('connection', (socket) => {
       
       await Post.findByIdAndUpdate(postId, { $push: { comments: comment } });
 
-      // Fetch the last comment with user info populated
       const post = await Post.findById(postId)
         .populate('comments.commenter', 'username profilePic');
       const lastComment = post.comments[post.comments.length - 1];
@@ -110,18 +113,19 @@ io.on('connection', (socket) => {
   });
 });
 
-// Error handling middleware
+// ✅ Error Handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// 404 handler
+// ✅ 404 Handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-}); 
+});
