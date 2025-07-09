@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const socket = io('https://bkpconnect.onrender.com');
+const socket = io('https://bkpconnect.onrender.com/api');
 
 function getRoomId(user1, user2) {
   return [user1, user2].sort().join('_');
@@ -25,7 +25,7 @@ const ChatRoom = () => {
     // Fetch target user info
     const fetchTargetUser = async () => {
       try {
-        const response = await axios.get(`https://bkpconnect.onrender.com/userprofile?userId=${userId}`, {
+        const response = await axios.get(`https://bkpconnect.onrender.com/api/userprofile?userId=${userId}`, {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,
           },
@@ -44,7 +44,7 @@ const ChatRoom = () => {
     // Fetch chat history
     const fetchChatHistory = async () => {
       try {
-        const response = await axios.get(`https://bkpconnect.onrender.com/chat/${roomId}`, {
+        const response = await axios.get(`https://bkpconnect.onrender.com/api/chat/${roomId}`, {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,
           },
