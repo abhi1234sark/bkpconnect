@@ -16,6 +16,12 @@ const server = http.createServer(app);
 
 const allowedOrigin = "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app";
 
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true
+}));
+
+
 
 const io = socketIo(server, {
   cors: {
