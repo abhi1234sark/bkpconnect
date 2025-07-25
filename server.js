@@ -20,25 +20,28 @@ const server = http.createServer(app);
 // Increase timeout for large file uploads
 server.timeout = 600000; // 10 minutes
 
-const allowedOrigin =  "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app";
+//const allowedOrigin =  "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app";
 
-
+app.use(cors({
+  origin: '*',        // Allow all origins (Hoppscotch, Vercel, etc.)
+  credentials: true,  // Set to true if you use cookies or tokens in future
+}));
 
 
 
 const io = socketIo(server, {
   cors: {
-    origin: allowedOrigin,
+    origin: '*',
     methods: ["GET", "POST"],
     credentials: true,
   }
 });
 
 
-app.use(cors({
-  origin: allowedOrigin,
-  credentials: true
-}));
+//app.use(cors({
+  //origin: allowedOrigin,
+  //credentials: true
+//}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
