@@ -19,11 +19,12 @@ router.post('/posts', auth, upload.single('file'), async (req, res) => {
     await post.save();
     
     // Populate user info before sending response
-    await post.populate('createdBy', 'username profilePic');
+   /// await post.populate('createdBy', 'username profilePic');
     res.status(201).json(post);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+  
 });
 
 // Get posts (feed, paginated, filter by type)
@@ -333,4 +334,45 @@ router.get('/chat/:roomId', auth, async (req, res) => {
   }
 });
 
-module.exports = router; 
+// Upload a chat file (image/video/audio/document)
+router.post('/chat/upload', auth, (req, res, next) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      console.error('Multer error:', err);
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: 'File too large. Maximum size is 50MB.' });
+      }
+      if (err.message.includes('Invalid file type')) {
+        return res.status(400).json({ error: err.message });
+      }
+      return res.status(500).json({ error: 'File upload failed' });
+    }
+    
+    try {
+      console.log('Chat upload route hit');
+      console.log('File received:', req.file);
+      console.log('File size:', req.file?.size);
+      console.log('File mimetype:', req.file?.mimetype);
+      
+      if (!req.file || !req.file.path) {
+        console.log('No file uploaded');
+        return res.status(400).json({ error: 'No file uploaded' });
+      }
+      
+      console.log('File path:', req.file.path);
+      console.log('File mimetype:', req.file.mimetype);
+      
+      res.status(201).json({
+        url: req.file.path,
+        filetype: req.file.mimetype,
+      });
+      
+      console.log('Chat upload successful');
+    } catch (err) {
+      console.error('Chat upload error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+});
+
+module.exports = router;
