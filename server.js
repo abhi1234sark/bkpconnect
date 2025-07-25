@@ -9,17 +9,20 @@ const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
 const Post = require('./models/Post');
 const Chat = require('./models/Chat');
+ // Import middleware object (do NOT use app.use(middleware))
+// Do NOT use: app.use(middleware) or app.use(require('./middleware'))
+// Only use individual middleware functions in routes, e.g.:
+
 
 const app = express();
 const server = http.createServer(app);
 
+// Increase timeout for large file uploads
+server.timeout = 600000; // 10 minutes
 
-const allowedOrigin = "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app";
+const allowedOrigin =  "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app";
 
-app.use(cors({
-  origin: allowedOrigin,
-  credentials: true
-}));
+
 
 
 
@@ -34,7 +37,7 @@ const io = socketIo(server, {
 
 app.use(cors({
   origin: allowedOrigin,
-  credentials: true,
+  credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
