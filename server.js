@@ -23,7 +23,7 @@ server.timeout = 600000; // 10 minutes
 //const allowedOrigin =  "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app";
 
 app.use(cors({
-  origin: '*',        // Allow all origins (Hoppscotch, Vercel, etc.)
+  origin: "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app",        // Allow all origins (Hoppscotch, Vercel, etc.)
   credentials: true,  // Set to true if you use cookies or tokens in future
 }));
 
@@ -31,7 +31,7 @@ app.use(cors({
 
 const io = socketIo(server, {
   cors: {
-    origin: '*',
+    origin: "https://bkpconnect-git-main-abhi1234sarks-projects.vercel.app",
     methods: ["GET", "POST"],
     credentials: true,
   }
