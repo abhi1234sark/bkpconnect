@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const socketIo = require('socket.io');
-require('dotenv').config({ path: './.env' });
+require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
